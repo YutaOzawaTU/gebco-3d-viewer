@@ -1,33 +1,24 @@
-# GEBCO 3D Viewer (Static Web App)
+# GEBCO 3D ビューア（静的サイト）
 
-This repository contains a simple static web viewer that visualizes a GEBCO NetCDF tile (converted to JSON) as an interactive 3D terrain using Three.js.
+ブラウザだけで GEBCO などの地形／海底地形 NetCDF（`.nc`）ファイルを読み込み、インタラクティブな 3D モデルとして表示・STL 出力できる軽量な Three.js アプリケーションです。
 
-Features:
-- Load `data/gebco_tile.json` (lat, lon, elevation) and render a 3D terrain.
-- X / Y / Z axis scale control (sliders and numeric inputs).
-- Generate a rectangular base ("土台") with adjustable thickness for 3D printing.
-- Download the current model (terrain + base) as an STL file.
+## 主な機能
 
-## Usage
+- **ブラウザ内で完結する NetCDF ロード** – 緯度・経度・標高（または水深）を含む任意の `.nc` ファイルをアップロードできます。サーバー処理は不要です。
+- **サンプルデータを同梱** – `data/gebco_tile.json` をワンクリックで読み込み、すぐに動作確認できます。
+- **軸ごとのスケール調整** – X/Y/Z 軸の縮尺をスライダーと数値入力の両方で個別に制御できます。
+- **土台の厚みを独立制御** – 地形スケールとは別に、立体造形用の土台厚を設定できます。
+- **STL エクスポート** – 地形と土台を結合した STL モデルをダウンロードできます。出力ファイル名は元データ名に応じて安全な文字列へ自動調整されます。
 
-1. Unzip the repository and serve it as a static site (or push to GitHub and enable GitHub Pages).
-2. Open `index.html` in a modern browser (Chrome, Firefox).
-3. Use the controls on the right to adjust scales and base thickness, then click **STL ファイルをダウンロード** to save the STL.
+## 使い方
 
-## Notes
+1. リポジトリを静的サイトとして公開するか（例：GitHub Pages）、`index.html` を対応ブラウザ（Chrome / Firefox / Edge 等）で直接開きます。
+2. サイドバーのアップローダーから NetCDF（`.nc`）ファイルを選択するか、サンプルデータを読み込みます。
+3. 必要に応じて X/Y/Z の縮尺や土台の厚みを調整します。
+4. **STL ファイルをダウンロード** ボタンをクリックして現在のモデルをエクスポートします。
 
-- The repository contains `data/gebco_tile.json` generated from the NetCDF file (if available).
-- If you want to regenerate the JSON from a different `.nc` file, use a Python script similar to the one below:
+> **補足:** 処理はすべてブラウザ内で実行されるため、アップロードしたファイルが外部へ送信されることはありません。
 
-```python
-import xarray as xr
-ds = xr.open_dataset("your.nc")
-lat = ds['lat'].values
-lon = ds['lon'].values
-elev = ds['elevation'].values  # or the appropriate variable name
-import json
-json.dump({'lat':lat.tolist(), 'lon':lon.tolist(), 'elevation':elev.tolist()}, open('data/gebco_tile.json','w'))
-```
+## ライセンス
 
-## License
 MIT

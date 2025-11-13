@@ -13,20 +13,115 @@
   }
   </script>
   <style>
-    body { margin: 0; font-family: system-ui, sans-serif; display: flex; height: 100vh; overflow: hidden; }
-    #viewer { flex: 1 1 auto; }
-    #sidebar { width: 320px; padding: 12px; box-sizing: border-box; border-left: 1px solid #ddd; overflow-y: auto; background: #fafafa; }
-    .control-group { margin-bottom: 16px; }
-    .control-group label { display: block; font-weight: bold; margin-bottom: 4px; }
-    .control-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-    input[type="range"] { flex: 1 1 auto; }
-    input[type="number"] { width: 80px; }
-    button { width: 100%; padding: 8px; cursor: pointer; }
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #viewer {
+      flex: 1 1 auto;
+    }
+    #sidebar {
+      width: 340px;
+      padding: 16px;
+      box-sizing: border-box;
+      border-left: 1px solid #ddd;
+      overflow-y: auto;
+      background: #fafafa;
+    }
+    h2 {
+      margin: 16px 0 8px;
+      font-size: 18px;
+    }
+    .control-group {
+      margin-bottom: 16px;
+    }
+    .control-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    input[type="range"] {
+      flex: 1 1 auto;
+    }
+    input[type="number"] {
+      width: 90px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      cursor: pointer;
+      border: 1px solid #1976d2;
+      background: #1976d2;
+      color: #fff;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    button.secondary {
+      border-color: #546e7a;
+      background: #546e7a;
+    }
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .file-input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .status {
+      font-size: 12px;
+      color: #555;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 8px;
+      line-height: 1.5;
+      margin-top: 8px;
+      white-space: pre-line;
+    }
+    .status.error {
+      color: #b71c1c;
+      border-color: #f28b82;
+      background: #fdecea;
+    }
+    .status.success {
+      color: #1b5e20;
+      border-color: #a5d6a7;
+      background: #f1f8e9;
+    }
+    #dataSummary {
+      font-size: 12px;
+      color: #333;
+      line-height: 1.6;
+      margin-top: 8px;
+      word-break: break-word;
+    }
   </style>
 </head>
 <body>
   <div id="viewer"></div>
   <div id="sidebar">
+    <h2>データ読み込み</h2>
+    <div class="control-group">
+      <label for="ncFileInput">NetCDF (.nc) ファイル</label>
+      <div class="file-input-wrapper">
+        <input id="ncFileInput" type="file" accept=".nc" />
+        <button id="loadSampleBtn" type="button" class="secondary">サンプルデータを読み込む</button>
+      </div>
+      <div id="loadStatus" class="status">読み込む NetCDF ファイルを選択するか、サンプルデータを利用してください。</div>
+      <div id="dataSummary"></div>
+    </div>
+
     <h2>地形スケール</h2>
     <div class="control-group">
       <label for="scaleXRange">X 軸スケール</label>
@@ -49,6 +144,8 @@
         <input id="scaleZNumber" type="number" min="0.1" max="10" step="0.1" value="1" />
       </div>
     </div>
+
+    <h2>土台</h2>
     <div class="control-group">
       <label for="baseThicknessRange">土台の厚み</label>
       <div class="control-row">
@@ -56,11 +153,14 @@
         <input id="baseThicknessNumber" type="number" min="0.5" max="20" step="0.5" value="5" />
       </div>
     </div>
+
     <div class="control-group">
-      <button id="downloadStlBtn">STL ファイルをダウンロード</button>
+      <button id="downloadStlBtn" disabled>STL ファイルをダウンロード</button>
     </div>
     <hr />
-    <p style="font-size:12px;color:#666">※ このページは静的サイトです。GitHub Pages でホストできます。</p>
+    <p style="font-size:12px;color:#666;line-height:1.6;">
+      ※ このページはブラウザのみで完結する静的サイトです。NetCDF ファイル（拡張子 .nc）をアップロードすると、地形を読み込み、STL 化して可視化します。読み込んだデータはブラウザ内でのみ処理されます。
+    </p>
   </div>
   <script type="module" src="./main.js"></script>
 </body>
